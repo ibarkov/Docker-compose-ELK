@@ -24,8 +24,6 @@ services:
         discovery.type: single-node
         ELASTIC_PASSWORD: $ELASTIC_PASSWORD
         xpack.security.enabled: $ELASTIC_SECURITY
-    networks:
-        - elk
 
   kibana:
     build:
@@ -44,8 +42,6 @@ services:
     environment:
         ELASTICSEARCH_USERNAME: elastic
         ELASTICSEARCH_PASSWORD: $ELASTIC_PASSWORD
-    networks:
-        - elk
     depends_on:
         - elasticsearch
 
@@ -58,12 +54,6 @@ services:
     depends_on:
       - elasticsearch
       - kibana
-    networks:
-      - elk
-
-networks:
-    elk:
-      driver: bridge
 
 volumes:
     elasticsearch:
