@@ -7,6 +7,7 @@ services:
         args:
           ELK_VERSION: $ELK_VERSION
     container_name: elasticsearch
+    restart: always
     volumes:
       - type: bind
         source: ./elasticsearch/config/elasticsearch.yml
@@ -32,6 +33,7 @@ services:
         args:
           ELK_VERSION: $ELK_VERSION
     container_name: kibana
+    restart: always
     volumes:
       - type: bind
         source: ./kibana/config/kibana.yml
@@ -50,6 +52,7 @@ services:
   ngnix:
     build: nginx/
     container_name: nginx
+    restart: always
     ports:
       - "8080:80"
     depends_on:
