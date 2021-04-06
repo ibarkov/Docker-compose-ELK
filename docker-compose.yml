@@ -21,6 +21,7 @@ services:
     environment:
         ES_JAVA_OPTS: "-Xmx256m -Xms256m"
         discovery.type: single-node
+        ELASTIC_PASSWORD: changeme
     networks:
         - elk
 
@@ -42,30 +43,16 @@ services:
     depends_on:
         - elasticsearch
 
-  logstash:
-    build:
-        context: logstash/
-        args:
-          ELK_VERSION: $ELK_VERSION
-    container_name: logstash
-    volumes:
-      - type: bind
-        source: ./logstash/config/logstash.yml
-        target: /usr/share/logstash/config/logstash.yml
-        read_only: true
-      - type: bind
-        source: ./logstash/pipeline
-        target: /usr/share/logstash/pipeline
-        read_only: true
+  ngnix:
+    build: nginx/
+    container_name: nginx
     ports:
-      - "5044:5044"
-      - "9600:9600"
-    environment:
-        LS_JAVA_OPTS: "-Xmx256m -Xms256m"
-    networks:
-        - elk
+      - "8080:80"
     depends_on:
-        - elasticsearch
+      - elasticsearch
+      - kibana
+    networks:
+      - elk
 
 networks:
     elk:
